@@ -19,7 +19,7 @@ public class ButtonsPage {
 
     // Butona çift tıklama metodu
     public void doubleClickButton() {
-        doubleClickMeButton.doubleClick();
+        doubleClickMeButton.scrollIntoView(true).doubleClick();
     }
 
     // Çift tıklama mesajını kontrol eden metod
@@ -28,7 +28,7 @@ public class ButtonsPage {
     }
 
     public void rightClickButton(){
-        rightClickMeButton.contextClick();
+        rightClickMeButton.scrollIntoView(true).contextClick();
     }
 
     public void  verifyRightClickMessage(){
