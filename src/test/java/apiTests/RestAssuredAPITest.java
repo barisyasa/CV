@@ -1,10 +1,16 @@
 package apiTests;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Test;
+
+
+
+
+import static org.hamcrest.Matchers.equalTo;
 
 public class RestAssuredAPITest {
 
@@ -30,6 +36,69 @@ public class RestAssuredAPITest {
         Response response = httpRequest.request(Method.GET,"");
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
+
+    }
+
+    @Test
+    public void GetBooks(){
+        RestAssured.baseURI = "https://demoqa.com/BookStore/v1/Books";
+        RequestSpecification httpRequest = RestAssured.given();
+        Response response = httpRequest.request(Method.GET,"");
+        System.out.println("Status received => " + response.getStatusLine());
+        System.out.println("Response=>" + response.prettyPrint());
+    }
+
+    @Test
+    public void PostUser(){
+        RestAssured.baseURI = "https://demoqa.com";
+
+        // Request Body (String ile tanımlanıyor)
+        String requestBody = "{\n" +
+                "  \"userName\": \"testuser\",\n" +
+                "  \"password\": \"Test@1234\"\n" +
+                "}";
+
+        // POST Request ve Response Validation
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON) // Header: Content-Type
+                .body(requestBody)            // Request Body
+                .when()
+                .post("/Account/v1/Authorized") // API Endpoint
+                .then()
+                .statusCode(200)              // Yanıtın HTTP Status Code'u 200 olmalı
+                .body(equalTo("true"))        // Yanıt gövdesi "true" bekleniyor
+                .extract()
+                .response();
+
+        // Yanıtı Konsola Yazdır
+        System.out.println("Response: " + response.asString());
+
+    }
+
+    @Test
+    public void PostUser404(){
+        RestAssured.baseURI = "https://demoqa.com";
+
+        // Request Body (String ile tanımlanıyor)
+        String requestBody = "{\n" +
+                "  \"userName\": \"baris\",\n" +
+                "  \"password\": \"yasa\"\n" +
+                "}";
+
+        // POST Request ve Response Validation
+        Response response = (Response) RestAssured.given()
+                .contentType(ContentType.JSON) // Header: Content-Type
+                .body(requestBody)            // Request Body
+                .when()
+                .post("/Account/v1/Authorized") // API Endpoint
+                .then()
+                .statusCode(404)              // Yanıtın HTTP Status Code'u 200 olmalı
+                .body("message",equalTo("User not found!"))        // Yanıt gövdesi "true" bekleniyor
+                .extract()
+                .response();
+
+        // Yanıtı Konsola Yazdır
+        System.out.println("Response: " + response.asString());
 
     }
 }
