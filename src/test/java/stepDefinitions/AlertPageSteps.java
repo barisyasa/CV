@@ -20,4 +20,14 @@ public class AlertPageSteps {
     public void user_close_alert(){
       alertPage.closeAlert();
   }
+
+  @When("User clicks on the 5 second alert button")
+    public void user_clicks_on_the_5_second_alert_button(){
+        alertPage.clickFiveSecondAlertButton();
+  }
+
+  @Then("User close timer alert")
+    public void user_close_timer_alert(){
+        alertPage.closeTimerAlert();
+  }
 }
