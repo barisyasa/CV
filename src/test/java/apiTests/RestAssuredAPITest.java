@@ -101,4 +101,13 @@ public class RestAssuredAPITest {
         System.out.println("Response: " + response.asString());
 
     }
+
+    @Test
+    public void GetObjects(){
+        RestAssured.baseURI ="https://api.restful-api.dev/objects";
+        RequestSpecification httpRequest = RestAssured.given();
+        Response response = httpRequest.request(Method.GET,"");
+        System.out.println("Status received => " + response.getStatusLine());
+        System.out.println("Response=>" + response.prettyPrint());
+    }
 }
