@@ -23,4 +23,24 @@ public class NewTabPageSteps {
     public void user_should_see_new_tab_text(){
         newTabPage.seeNewTabText();
     }
+
+    @When("User click new window button")
+    public void user_click_new_window_button(){
+        newTabPage.clickNewWindowButton();
+    }
+
+    @Then("User should see new window text")
+    public void user_should_see_new_window_text(){
+        newTabPage.seeNewWindowText();
+    }
+
+    @When("User click new window message button")
+    public void user_click_new_window_message_button(){
+        newTabPage.clickNewWindowMsgButton();
+    }
+
+    @Then("User should see message")
+    public void user_should_see_message(){
+        newTabPage.seeNewWindowMsg();
+    }
 }
