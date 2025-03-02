@@ -8,8 +8,8 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.Test;
 
 
-
-
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
 
 public class RestAssuredAPITest {
@@ -19,7 +19,7 @@ public class RestAssuredAPITest {
         // Specify the base URL to the RESTful web service
         RestAssured.baseURI = "https://demoqa.com/BookStore/v1/Books";
         // Get the RequestSpecification of the request to be sent to the server.
-        RequestSpecification httpRequest = RestAssured.given();
+        RequestSpecification httpRequest = given();
         // specify the method type (GET) and the parameters if any.
         //In this case the request does not take any parameters
         Response response = httpRequest.request(Method.GET, "");
@@ -32,7 +32,7 @@ public class RestAssuredAPITest {
     @Test
     public void GetBrands(){
         RestAssured.baseURI = "https://api.practicesoftwaretesting.com/brands";
-        RequestSpecification httpRequest = RestAssured.given();
+        RequestSpecification httpRequest = given();
         Response response = httpRequest.request(Method.GET,"");
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
@@ -42,7 +42,7 @@ public class RestAssuredAPITest {
     @Test
     public void GetBooks(){
         RestAssured.baseURI = "https://demoqa.com/BookStore/v1/Books";
-        RequestSpecification httpRequest = RestAssured.given();
+        RequestSpecification httpRequest = given();
         Response response = httpRequest.request(Method.GET,"");
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
@@ -59,7 +59,7 @@ public class RestAssuredAPITest {
                 "}";
 
         // POST Request ve Response Validation
-        Response response = RestAssured.given()
+        Response response = given()
                 .contentType(ContentType.JSON) // Header: Content-Type
                 .body(requestBody)            // Request Body
                 .when()
@@ -86,7 +86,7 @@ public class RestAssuredAPITest {
                 "}";
 
         // POST Request ve Response Validation
-        Response response = (Response) RestAssured.given()
+        Response response = (Response) given()
                 .contentType(ContentType.JSON) // Header: Content-Type
                 .body(requestBody)            // Request Body
                 .when()
@@ -103,9 +103,45 @@ public class RestAssuredAPITest {
     }
 
     @Test
+    public void PutUser(){
+        // Base URL
+        RestAssured.baseURI = "https://reqres.in/api";
+
+        // Güncellenmiş kullanıcı bilgilerini içeren JSON verisi
+        String updatedUserData = "{\n" +
+                "    \"name\": \"baris\",\n" +
+                "    \"job\": \"tester\"\n" +
+                "}";
+
+        // PUT isteği gönderme
+        given()
+                .contentType(ContentType.JSON)  // JSON formatında veri gönderiyoruz
+                .body(updatedUserData)          // Gönderilecek JSON verisi
+                .when()
+                .put("/users/2")               // Kullanıcıyı güncelleme (ID 2)
+                .then()
+                .statusCode(200)               // Başarılı yanıt bekliyoruz (HTTP 200 OK)
+                .body("name", equalTo("baris"))  // Yanıtın içeriğinde 'name' alanının "John" olduğunu kontrol et
+                .body("job", equalTo("tester"));
+    }
+
+    @Test
+    public void DeleteUser(){
+        RestAssured.baseURI = "https://reqres.in/api";
+
+        given()
+                .contentType(ContentType.JSON)  // JSON formatında veri göndereceğiz
+                .when()
+                .delete("/users/2")            // ID 2 olan kullanıcıyı sil
+                .then()
+                .statusCode(204);
+
+    }
+
+    @Test
     public void GetObjects(){
         RestAssured.baseURI ="https://api.restful-api.dev/objects";
-        RequestSpecification httpRequest = RestAssured.given();
+        RequestSpecification httpRequest = given();
         Response response = httpRequest.request(Method.GET,"");
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
