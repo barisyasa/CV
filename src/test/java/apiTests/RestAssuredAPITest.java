@@ -139,6 +139,23 @@ public class RestAssuredAPITest {
     }
 
     @Test
+    public void PatchUser(){
+        RestAssured.baseURI = "https://reqres.in/api";
+        String updatedUserData = "{\n" +
+                "    \"name\": \"baris\",\n" +
+                "    \"job\": \"tester\"\n" +
+                "}";
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(updatedUserData)
+                .when()
+                .patch("/users/2")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
     public void GetObjects(){
         RestAssured.baseURI ="https://api.restful-api.dev/objects";
         RequestSpecification httpRequest = given();
