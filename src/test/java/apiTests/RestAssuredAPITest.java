@@ -163,4 +163,6 @@ public class RestAssuredAPITest {
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
     }
+
+
 }
