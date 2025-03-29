@@ -64,6 +64,51 @@ public class RestAssuredAPITest {
     }
 
     @Test
+    public void GetSingleObject(){
+        RestAssured.baseURI = "https://api.restful-api.dev";
+        given()
+
+                .when()
+                .get("/objects/7")
+                .then()
+                .statusCode(200)
+                .body("id",equalTo("7"))
+                .body("name",notNullValue())
+                .log().all();
+    }
+
+    @Test
+    public void PostObject(){
+        RestAssured.baseURI = "https://api.restful-api.dev";
+
+        String requestBody = "{\n" +
+                "   \"name\": \"Apple MacBook Pro 16\",\n" +
+                "   \"data\": {\n" +
+                "      \"year\": 2019,\n" +
+                "      \"price\": 1849.99,\n" +
+                "      \"CPU model\": \"Intel Core i9\",\n" +
+                "      \"Hard disk size\": \"1 TB\"\n" +
+                "   }\n" +
+                "}";
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/objects")
+                .then()
+                .statusCode(200) // HTTP 200 olduğunu doğrular
+                .statusCode(200) // HTTP 200 doğrulaması
+                .body("name", equalTo("Apple MacBook Pro 16"))
+                .body("data.year", equalTo(2019))
+                .body("data.price", equalTo(1849.99f)) // Float değerler için 'f' ekleyin
+                .body("data['CPU model']", equalTo("Intel Core i9"))
+                .body("data['Hard disk size']", equalTo("1 TB"))
+                .extract()
+                .response();
+    }
+
+    @Test
     public void PostUser(){
         RestAssured.baseURI = "https://demoqa.com";
 
@@ -178,6 +223,8 @@ public class RestAssuredAPITest {
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
     }
+
+
 
 
 }
