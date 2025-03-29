@@ -33,6 +33,7 @@ public class DatePickerPage {
     }
 
     public void verifySelectedDateAndTime(){
+        selectDateAndTimeItem.scrollTo();
         selectDateAndTimeItem.shouldHave(value("March 10, 2025 12:55 AM"));
     }
 
