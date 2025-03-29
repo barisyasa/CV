@@ -11,6 +11,7 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class RestAssuredAPITest {
 
@@ -46,6 +47,20 @@ public class RestAssuredAPITest {
         Response response = httpRequest.request(Method.GET,"");
         System.out.println("Status received => " + response.getStatusLine());
         System.out.println("Response=>" + response.prettyPrint());
+    }
+
+    @Test
+    public void GetBook(){
+        RestAssured.baseURI = "https://demoqa.com";
+        given()
+                .queryParam("ISBN","9781449325862")
+                .when()
+                .get("/BookStore/v1/Book")
+                .then()
+                .statusCode(200)
+                .body("isbn",equalTo("9781449325862"))
+                .body("title",notNullValue())
+                .log().all();
     }
 
     @Test
