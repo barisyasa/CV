@@ -77,6 +77,8 @@ public class RestAssuredAPITest {
                 .log().all();
     }
 
+
+
     @Test
     public void PostObject(){
         RestAssured.baseURI = "https://api.restful-api.dev";
